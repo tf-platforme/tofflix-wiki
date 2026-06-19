@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TofFlix — Page officielle &amp; statut du service</title>
+<meta name="robots" content="index,follow">
+<meta name="description" content="Page de référence officielle TofFlix : l'adresse du moment, le statut du service et les liens vérifiés. Aucun contenu hébergé ici.">
+<meta name="theme-color" content="#08080c">
+<link rel="icon" href="logo.png">
+<!-- 100% autonome : aucune police externe, aucun CDN, aucun analytics, aucun tracker. -->
+<style>
+  :root{
+    --bg:#08080c; --bg2:#101018; --card:#15151f; --card2:#1b1b27;
+    --line:#262633; --txt:#f4f4f8; --muted:#9a9aac; --muted2:#6e6e80;
+    --accent:#e50914; --accent2:#ff2b36;
+    --ok:#22c55e; --ko:#ef4444; --warn:#f59e0b;
+    --radius:16px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:
+      radial-gradient(900px 520px at 50% -8%, rgba(229,9,20,.20), transparent 60%),
+      linear-gradient(180deg, var(--bg2), var(--bg) 42%);
+    color:var(--txt); min-height:100vh;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.55; padding:26px 18px 60px; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{width:100%; max-width:620px; margin:0 auto}
+  .section{margin-top:18px}
+
+  /* Navbar ancrée (sticky) */
+  .topnav{position:sticky; top:0; z-index:50; margin:-26px 0 0; padding:9px 6px;
+    background:rgba(8,8,12,.85); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:10px}
+  .topnav .nlogo{height:28px; width:auto; mix-blend-mode:screen; flex:none}
+  .nlinks{display:flex; gap:2px; overflow-x:auto; -webkit-overflow-scrolling:touch}
+  .nlinks::-webkit-scrollbar{display:none}
+  .nlinks a{color:var(--muted); font-size:13px; font-weight:600; text-decoration:none; padding:7px 9px; border-radius:8px; white-space:nowrap}
+  .nlinks a:hover{color:var(--txt); background:var(--card)}
+  #statut,#etat,#news,#aide{scroll-margin-top:64px}
+  .card{background:linear-gradient(180deg,var(--card2),var(--card)); border:1px solid var(--line); border-radius:var(--radius); padding:20px 22px}
+  .label{font-size:11px; text-transform:uppercase; letter-spacing:1.4px; color:var(--muted2); font-weight:700; margin-bottom:12px}
+  h2.t{font-size:15px; font-weight:800; margin-bottom:12px; letter-spacing:-.2px}
+
+  /* HERO + LOGO officiel */
+  .hero{text-align:center; padding:18px 0 2px}
+  .badge{display:inline-block; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:#ffd2d4;
+    background:rgba(229,9,20,.14); border:1px solid rgba(229,9,20,.35); padding:5px 12px; border-radius:999px; font-weight:700; margin-bottom:18px}
+  .logo{display:block; width:250px; max-width:74%; height:auto; margin:0 auto;
+    mix-blend-mode:screen; /* neutralise le fond noir du PNG sur le degrade */ }
+  .tagline{color:var(--muted); margin-top:12px; font-size:14px; letter-spacing:2px; text-transform:uppercase}
+  .tagline b{color:var(--accent2)}
+
+  .statusbar{display:flex; align-items:center; gap:12px; justify-content:center;
+    background:rgba(34,197,94,.08); border:1px solid rgba(34,197,94,.28); border-radius:999px;
+    padding:11px 18px; margin:20px auto 0; width:fit-content; font-weight:700; font-size:14px; transition:.3s}
+  .statusbar.ko{background:rgba(239,68,68,.08); border-color:rgba(239,68,68,.3)}
+  .statusbar.checking{background:rgba(245,158,11,.08); border-color:rgba(245,158,11,.3)}
+  .pulse{width:11px; height:11px; border-radius:50%; background:var(--ok); position:relative; flex:none}
+  .pulse::after{content:""; position:absolute; inset:-5px; border-radius:50%; background:var(--ok); opacity:.5; animation:p 1.8s ease-out infinite}
+  .statusbar.ko .pulse,.statusbar.ko .pulse::after{background:var(--ko)}
+  .statusbar.checking .pulse,.statusbar.checking .pulse::after{background:var(--warn)}
+  @keyframes p{0%{transform:scale(1);opacity:.5}100%{transform:scale(2.6);opacity:0}}
+
+  .go{display:flex; align-items:center; justify-content:center; gap:10px; text-decoration:none; margin-top:16px;
+    background:linear-gradient(180deg,var(--accent2),var(--accent)); color:#fff; font-weight:800; font-size:19px;
+    padding:18px; border-radius:14px; box-shadow:0 10px 30px rgba(229,9,20,.35); transition:transform .08s, box-shadow .2s; word-break:break-all; text-align:center}
+  .go:hover{box-shadow:0 12px 38px rgba(229,9,20,.5)} .go:active{transform:scale(.99)} .go svg{flex:none}
+  .hint{font-size:12.5px; color:var(--muted); text-align:center; margin-top:12px}
+  .meta{font-size:12px; color:var(--muted2); text-align:center; margin-top:6px}
+
+  .grid{display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px}
+  .svc{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 10px; text-align:center}
+  .svc .dot{width:9px;height:9px;border-radius:50%;background:var(--ok);display:inline-block;margin-right:6px;vertical-align:middle}
+  .svc .dot.ko{background:var(--ko)} .svc .dot.warn{background:var(--warn)}
+  .svc .n{font-size:13px;font-weight:600;display:block;margin-top:8px;color:var(--txt)} .svc .s{font-size:11px;color:var(--muted)}
+  .uptime{text-align:center; font-size:12.5px; color:var(--muted); margin-top:10px}
+  .uptime b{color:var(--ok)}
+
+  .ann{display:flex; gap:12px; padding:12px 0; border-bottom:1px solid var(--line)}
+  .ann:last-child{border-bottom:0; padding-bottom:0}
+  .ann .d{font-size:11px; color:var(--muted2); font-weight:700; white-space:nowrap; padding-top:2px}
+  .ann .t{font-size:14px; color:#dcdce4}
+
+  .btn2{display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--txt); font-weight:600; font-size:15px;
+    border:1px solid var(--line); border-radius:12px; padding:15px 16px; background:var(--card); transition:border-color .2s}
+  .btn2:hover{border-color:#2aabee} .btn2 .tg{color:#2aabee; flex:none}
+
+  .tips{list-style:none; display:flex; flex-direction:column; gap:12px}
+  .tips li{display:flex; gap:12px; align-items:flex-start; font-size:14px; color:#dcdce4}
+  .tips .ic{width:30px;height:30px;border-radius:8px;background:rgba(229,9,20,.14);border:1px solid rgba(229,9,20,.3);
+    display:flex;align-items:center;justify-content:center;flex:none}
+  .tips b{color:var(--txt)}
+
+  .warnbox{display:flex; gap:12px; align-items:flex-start; background:rgba(245,158,11,.07); border:1px solid rgba(245,158,11,.28);
+    border-radius:12px; padding:14px 16px; font-size:13.5px; color:#f3e2c4} .warnbox svg{flex:none; margin-top:1px}
+
+  details{border:1px solid var(--line); border-radius:12px; margin-bottom:8px; background:var(--card); overflow:hidden}
+  summary{cursor:pointer; padding:14px 16px; font-weight:600; font-size:14.5px; list-style:none; display:flex; justify-content:space-between; align-items:center}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+"; color:var(--muted); font-size:20px} details[open] summary::after{content:"\2013"}
+  details .a{padding:0 16px 15px; font-size:13.5px; color:var(--muted)} details .a a{color:var(--accent2)}
+
+  .why{font-size:14px; color:#cfcfda}
+  .foot{text-align:center; color:var(--muted2); font-size:11.5px; margin-top:26px; line-height:1.7}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav">
+    <img class="nlogo" src="logo.png" alt="TofFlix">
+    <div class="nlinks">
+      <a href="#statut">Statut</a>
+      <a href="#etat">Services</a>
+      <a href="#news">Annonces</a>
+      <a href="#aide">Aide</a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <span class="badge">● Page officielle</span>
+    <img class="logo" src="logo.png" alt="TofFlix">
+    <div class="tagline">Stream. Regarde. <b>Kiffe.</b></div>
+    <div id="statusbar" class="statusbar checking"><span class="pulse"></span><span id="statusText">Vérification du service…</span></div>
+  </div>
+
+  <div class="card section" id="statut">
+    <div class="label">Adresse officielle du moment</div>
+    <a id="goBtn" class="go" href="#" rel="noopener">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span id="goLabel">Chargement…</span>
+    </a>
+    <div class="hint">Clique pour ouvrir le site. Aucune redirection automatique.</div>
+    <div class="meta" id="checkDetail"></div>
+    <div class="meta" id="updated"></div>
+  </div>
+
+  <div class="warnbox section">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 9v4m0 4h.01M10.3 3.9 2.4 18a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" stroke="#f59e0b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div><b>Méfie-toi des copies.</b> N'utilise que les liens présents sur cette page. Tout autre « TofFlix » est un faux (phishing / pub / malware).</div>
+  </div>
+
+  <div class="section" id="etat">
+    <h2 class="t">État des services</h2>
+    <div class="grid" id="services"></div>
+    <div class="uptime" id="uptime"></div>
+  </div>
+
+  <div class="card section">
+    <div class="label">Pourquoi cette page&nbsp;?</div>
+    <div class="why">Les sites de streaming voient régulièrement leur adresse changer : maintenance, montée de charge, ou blocages côté fournisseurs d'accès. Quand ça arrive, on perd facilement le bon lien — et des copies frauduleuses en profitent.<br><br>
+    Cette page est le <b>point de repère officiel et permanent</b> de TofFlix. Elle n'héberge aucun contenu : elle se contente d'afficher, en temps réel, <b>l'adresse correcte du moment</b> et l'état du service. Garde-la en favori : tant que tu reviens ici, tu ne perds jamais l'accès.</div>
+  </div>
+
+  <div class="card section" id="news">
+    <div class="label">Annonces</div>
+    <div id="annonces"></div>
+  </div>
+
+  <div class="card section">
+    <div class="label">Ne jamais perdre l'accès</div>
+    <ul class="tips">
+      <li><span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="m12 17-5.9 3.1 1.1-6.6L2.5 8.8l6.6-1L12 1.8l2.9 6 6.6 1-4.7 4.7 1.1 6.6z" stroke="#ff2b36" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
+        <div><b>Mets cette page en favori.</b> C'est ton entrée fixe : elle, elle ne bouge pas.</div></li>
+      <li><span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="#2aabee"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg></span>
+        <div><b>Rejoins le canal Telegram.</b> Si jamais cette page est inaccessible, l'adresse à jour y est aussi publiée.</div></li>
+      <li><span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="6" y="2.5" width="12" height="19" rx="2.5" stroke="#fff" stroke-width="1.6"/><path d="M10.5 18.5h3" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+        <div><b>Ajoute le site à ton écran d'accueil.</b> Depuis le navigateur : menu → « Ajouter à l'écran d'accueil » → accès en un tap.</div></li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2 class="t">Liens officiels</h2>
+    <a class="btn2" id="tgLink" href="#" target="_blank" rel="noopener">
+      <svg class="tg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
+      Canal Telegram (lien de secours toujours à jour)
+    </a>
+  </div>
+
+  <div class="section" id="aide">
+    <h2 class="t">Questions fréquentes</h2>
+    <details><summary>Le site ne s'ouvre pas, que faire ?</summary>
+      <div class="a">Vérifie d'abord que tu utilises bien le bouton « Adresse officielle » ci-dessus (l'adresse change parfois). Vide le cache de ton navigateur et réessaie. Si ça persiste, reviens sur cette page ou consulte le canal Telegram : l'adresse à jour y est toujours indiquée.</div></details>
+    <details><summary>Pourquoi l'adresse du site change ?</summary>
+      <div class="a">Maintenance, montée de charge ou blocages côté fournisseurs d'accès. Cette page existe justement pour t'indiquer en permanence l'adresse officielle correcte du moment.</div></details>
+    <details><summary>Cette page est-elle officielle ?</summary>
+      <div class="a">Oui. C'est la page de référence officielle TofFlix. Elle n'héberge aucun contenu : elle sert uniquement à publier l'adresse et le statut du service. Mets-la en favori.</div></details>
+  </div>
+
+  <div class="foot">
+    Page d'information officielle TofFlix — aucun contenu n'est hébergé ici.<br>
+    <span id="year"></span> · Stream. Regarde. Kiffe.
+  </div>
+
+</div>
+
+<script>
+(function(){
+  var ET={ok:'En ligne',ko:'Hors ligne',warn:'Instable'};
+  fetch('status.json?_='+Date.now()).then(function(r){return r.json();}).then(function(d){
+    var url=(d.domaine_actif||'').replace(/\/+$/,'');
+    document.getElementById('goLabel').textContent=url.replace(/^https?:\/\//,'')||'indisponible';
+    document.getElementById('goBtn').href=url||'#';
+    var tg=document.getElementById('tgLink'); if(d.telegram){tg.href=d.telegram;}else{tg.style.display='none';}
+    if(d.maj){document.getElementById('updated').textContent='Dernière mise à jour : '+d.maj;}
+    if(d.uptime){document.getElementById('uptime').innerHTML='Disponibilité : <b>'+escapeHtml(d.uptime)+'</b>';}
+
+    var sv=document.getElementById('services');
+    (d.services||[]).forEach(function(s){
+      var el=document.createElement('div'); el.className='svc';
+      el.innerHTML='<span class="dot '+(s.etat==='ok'?'':s.etat)+'"></span><span class="n">'+escapeHtml(s.nom)+'</span><span class="s">'+(ET[s.etat]||ET.ok)+'</span>';
+      sv.appendChild(el);
+    });
+
+    var an=document.getElementById('annonces'); var list=(d.annonces||[]);
+    if(!list.length){an.innerHTML='<div class="ann"><div class="t" style="color:var(--muted)">Aucune annonce pour le moment.</div></div>';}
+    list.forEach(function(a){var el=document.createElement('div'); el.className='ann';
+      el.innerHTML='<div class="d">'+escapeHtml(a.date||'')+'</div><div class="t">'+escapeHtml(a.texte||'')+'</div>'; an.appendChild(el);});
+
+    checkReachable(url,d.statut);
+  }).catch(function(){ setBar('ko','status.json introuvable'); });
+
+  function setBar(cls,txt){var b=document.getElementById('statusbar'); b.className='statusbar '+(cls==='ok'?'':cls);
+    document.getElementById('statusText').textContent=txt;}
+
+  function checkReachable(url,declared){
+    if(!url){setBar('ko','Service indisponible'); return;}
+    var img=new Image(), done=false, t0=Date.now();
+    var t=setTimeout(function(){if(!done){done=true; finish(false,0);}},6000);
+    function finish(ok,ms){
+      if(ok){setBar('ok','Service en ligne');
+        document.getElementById('checkDetail').textContent='Vérifié à l’instant · latence ~'+ms+' ms';}
+      else if(declared==='online'){setBar('warn','Site déclaré en ligne');
+        document.getElementById('checkDetail').textContent='Statut publié par l’équipe (vérif. navigateur indisponible)';}
+      else{setBar('ko','Site injoignable depuis ta connexion');
+        document.getElementById('checkDetail').textContent='Dernière tentative : à l’instant';}
+    }
+    img.onload=function(){if(done)return; done=true; clearTimeout(t); finish(true,Date.now()-t0);};
+    img.onerror=function(){if(done)return; done=true; clearTimeout(t); finish(false,0);};
+    img.src=url+'/favicon.ico?_='+Date.now();
+  }
+  function escapeHtml(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  document.getElementById('year').textContent=new Date().getFullYear();
+})();
+</script>
+</body>
+</html>

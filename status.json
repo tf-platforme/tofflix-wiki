@@ -1,0 +1,18 @@
+{
+  "domaine_actif": "https://tofflix.com",
+  "statut": "online",
+  "maj": "2026-06-17",
+  "uptime": "99,9 % sur 30 jours",
+  "telegram": "https://t.me/+d9cBjGsGHiVkYTc0",
+  "message": "Le domaine officiel peut changer (maintenance, blocages FAI). Cette page indique TOUJOURS l'adresse correcte du moment. Mets-la en favori : c'est ton point de repère officiel.",
+  "services": [
+    { "nom": "Site web",      "etat": "ok" },
+    { "nom": "Lecture vidéo", "etat": "ok" },
+    { "nom": "Telegram",      "etat": "ok" }
+  ],
+  "annonces": [
+    { "date": "2026-06-17", "texte": "Tous les services fonctionnent normalement. Bon visionnage !" },
+    { "date": "2026-06-12", "texte": "Catalogue mis à jour : nouveaux films et séries ajoutés." },
+    { "date": "2026-06-05", "texte": "Performances de lecture améliorées sur mobile." }
+  ]
+}
